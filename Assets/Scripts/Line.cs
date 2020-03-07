@@ -92,6 +92,10 @@ public class Line : MonoBehaviour
 
     public float DistanceToClosestPoint(LineRenderer otherLine)
     {
+        if(GetComponent<LineRenderer>().positionCount <= 0)
+        {
+            return 0;
+        }
         Vector3 currentPoint = GetComponent<LineRenderer>().GetPosition(GetComponent<LineRenderer>().positionCount - 1);
 
         float closestDistance = 100;

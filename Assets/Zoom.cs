@@ -25,7 +25,7 @@ public class Zoom : MonoBehaviour
 
         GetComponent<Camera>().orthographicSize = Mathf.Lerp(minZoom, maxZoom, percentage);
         Vector3 targetPosition = Vector3.Lerp(idlePosition, new Vector3(point.x, point.y, Camera.main.transform.position.z), percentage);
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPosition, Time.deltaTime * 5);
+        Camera.main.transform.position = targetPosition;
 
     }
 }
