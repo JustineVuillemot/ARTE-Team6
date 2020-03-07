@@ -6,7 +6,8 @@ public class Line : MonoBehaviour
 {
     float percentage, height, addedHeight;
     public float speed, heightInfluence, xScale,yScale, startHeight;
-    LineRenderer lineRenderer;
+    public int zPos;
+    public LineRenderer lineRenderer;
     GameManager gameManager;
     FillLine fill;
 
@@ -25,10 +26,10 @@ public class Line : MonoBehaviour
         //two points at the bottom
         lineRenderer.positionCount = 2;
 
-        Vector3 bottomRightPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f);
+        Vector3 bottomRightPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f, zPos);
         lineRenderer.SetPosition(0, bottomRightPos);
 
-        Vector3 bottomLeftPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f);
+        Vector3 bottomLeftPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f, zPos);
         lineRenderer.SetPosition(1, bottomLeftPos);
 
         while (percentage < 1)
@@ -49,7 +50,7 @@ public class Line : MonoBehaviour
 
             percentage += Time.deltaTime * speed;
             lineRenderer.positionCount++;
-            Vector3 newPointPosition = new Vector3(-xScale / 2 + xScale * percentage, -yScale / 2 + height + startHeight);
+            Vector3 newPointPosition = new Vector3(-xScale / 2 + xScale * percentage, -yScale / 2 + height + startHeight, zPos);
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, newPointPosition);
 
             //also updating bottom right corner position
@@ -83,12 +84,29 @@ public class Line : MonoBehaviour
         //If line below exists
         if (gameManager.lines.Count > 1)
         {
-
             return heightOfCurrentLine <= HeightOfOtherLineAtSameDistance(gameManager.lines[gameManager.lines.Count - 2].lineRenderer) ;
 
         }
         return false;
     }
+
+    public float DistanceToClosestPoint(LineRenderer otherLine)
+    {
+        Vector3 currentPoint = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
+
+        float closestDistance = 100;
+
+        for (int i = 0; i < otherLine.positionCount; i++)
+        {
+            float distance = Vector3.Distance(currentPoint, otherLine.GetPosition(i));
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+            }
+        }
+        return closestDistance;
+    }
+
 
     float HeightOfOtherLineAtSameDistance(LineRenderer otherLine)
     {
@@ -104,4 +122,6 @@ public class Line : MonoBehaviour
 
         return 0;
     }
+
+
 }
