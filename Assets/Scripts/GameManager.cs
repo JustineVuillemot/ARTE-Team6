@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
         if (lines.Count > 1)
         {
-            Focus();
+            //Focus();
         }
     }
 
