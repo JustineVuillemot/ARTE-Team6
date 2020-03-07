@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Line : MonoBehaviour
 {
-    float percentage, heightPercentage, addedHeight;
-    public float speed, heightInfluence, xScale,yScale;
+    float percentage, height, addedHeight;
+    public float speed, heightInfluence, xScale,yScale, startHeight;
     LineRenderer lineRenderer;
     GameManager gameManager;
 
@@ -35,15 +35,58 @@ public class Line : MonoBehaviour
                 //heightPercentage -= heightInfluence * Time.deltaTime;
 
             }
-            heightPercentage += addedHeight;
+            height += addedHeight;
 
             percentage += Time.deltaTime * speed;
             lineRenderer.positionCount++;
-            Vector3 newPointPosition = new Vector3(-xScale / 2 + xScale * percentage, -yScale / 2 + yScale * heightPercentage);
+            Vector3 newPointPosition = new Vector3(-xScale / 2 + xScale * percentage, -yScale / 2 + height + startHeight);
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, newPointPosition);
-            yield return new WaitForEndOfFrame();
+
+            if (CheckForCollision())
+            {
+                OnLineCollided();
+                break;
+            }
+
+            yield return null;
         }
         gameManager.OnLineFinished();
-                    
+        
+    }
+
+    void OnLineCollided()
+    {
+        gameManager.OnLineFinished();
+    }
+
+    bool CheckForCollision()
+    {
+        float heightOfCurrentLine = lineRenderer.GetPosition(lineRenderer.positionCount - 1).y;
+
+        //check for collision 
+
+        //If line below exists
+        if (gameManager.lines.Count > 1)
+        {
+
+            return heightOfCurrentLine <= HeightOfLineBelow() ;
+
+        }
+        return false;
+    }
+
+    float HeightOfLineBelow()
+    {
+        Vector3 currentPoint = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
+        LineRenderer lineBelow = gameManager.lines[gameManager.lines.Count - 2].lineRenderer;
+
+        for(int i = 0; i < lineBelow.positionCount; i++) 
+        {
+            if(lineBelow.GetPosition(i).x > currentPoint.x)
+            {
+                return lineBelow.GetPosition(i).y;
+            } 
+        }
+        return 0;
     }
 }

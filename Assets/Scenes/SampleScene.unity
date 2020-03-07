@@ -234,6 +234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linePrefab: {fileID: 2505595815192311316, guid: d6a7423b4359a2047908cea5139672ca,
     type: 3}
+  startdistanceBetweenLines: 1
 --- !u!4 &697542263
 Transform:
   m_ObjectHideFlags: 0
