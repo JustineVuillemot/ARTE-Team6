@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
         if (lines.Count > 1)
         {
-            //Focus();
+            Focus();
         }
     }
 
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
         if (distance < focusDistance)
         {
             float percentage = 1 - distance / focusDistance;
-            Time.timeScale = 1 - focusCurve.Evaluate(percentage) * 0.9f;
+            Time.timeScale = 1 - focusCurve.Evaluate(percentage) * 0.99f;
             Camera.main.GetComponent<Zoom>().Focus(focusCurve.Evaluate(percentage), positionOfPoint);
         } else
         {

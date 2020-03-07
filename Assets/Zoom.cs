@@ -16,7 +16,7 @@ public class Zoom : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(0, gameManager.numberOfLine * gameManager.startdistanceBetweenLines, Camera.main.transform.position.z), Time.deltaTime * 2);
+        //Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(0, gameManager.numberOfLine * gameManager.startdistanceBetweenLines, Camera.main.transform.position.z), Time.deltaTime * 2);
 
 
     }
