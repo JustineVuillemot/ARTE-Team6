@@ -8,6 +8,8 @@ public class FillLine : MonoBehaviour
     private MeshRenderer _renderer;
     private MeshFilter _filter;
 
+    private Color meshColor = Color.black;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +24,15 @@ public class FillLine : MonoBehaviour
     {
         _renderer = GetComponent<MeshRenderer>();
         _filter = GetComponent<MeshFilter>();
+
+        meshColor = new Color (
+            Random.Range(0f, 1f),
+            Random.Range(0f, 1f),
+            Random.Range(0f, 1f)
+        );
+            //Random.ColorHSV();
     }
+
 
     public void CreateFilledShape(LineRenderer line)
     {
@@ -47,15 +57,11 @@ public class FillLine : MonoBehaviour
         Triangulator triangulator = new Triangulator(linePoints);
         int[] indices = triangulator.Triangulate();
 
-        List<Color> colors = new List<Color>(vertices3D.Length);
-        colors.ForEach(c => c = Color.black);
-
         // Create the mesh
         Mesh mesh = new Mesh
         {
             vertices = vertices3D,
             triangles = indices,
-            colors = colors.ToArray()
         };
 
         mesh.RecalculateNormals();
@@ -63,6 +69,7 @@ public class FillLine : MonoBehaviour
 
         // Set up game object with mesh;
         _renderer.material = new Material(Shader.Find("Sprites/Default"));
+        _renderer.material.color = meshColor;
         _filter.mesh = mesh;
     }
 }
