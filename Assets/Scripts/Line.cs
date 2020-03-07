@@ -22,9 +22,17 @@ public class Line : MonoBehaviour
 
     IEnumerator Generate()
     {
+        //two points at the bottom
+        lineRenderer.positionCount = 2;
+
+        Vector3 bottomRightPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f);
+        lineRenderer.SetPosition(0, bottomRightPos);
+
+        Vector3 bottomLeftPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f);
+        lineRenderer.SetPosition(1, bottomLeftPos);
+
         while (percentage < 1)
         {
-
             if (Input.GetKey("space"))
             {
                 addedHeight = Mathf.Lerp(addedHeight, heightInfluence, Time.deltaTime);
@@ -44,6 +52,10 @@ public class Line : MonoBehaviour
             Vector3 newPointPosition = new Vector3(-xScale / 2 + xScale * percentage, -yScale / 2 + height + startHeight);
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, newPointPosition);
 
+            //also updating bottom right corner position
+            bottomRightPos.x = newPointPosition.x;
+            lineRenderer.SetPosition(0, bottomRightPos);
+
             fill.CreateFilledShape(lineRenderer);
 
             if (CheckForCollision())
@@ -53,8 +65,8 @@ public class Line : MonoBehaviour
 
             yield return null;
         }
+
         gameManager.OnLineFinished();
-        
     }
 
     void OnLineCollided()
