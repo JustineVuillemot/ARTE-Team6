@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
@@ -37,6 +38,9 @@ public class GameManager : MonoBehaviour
         newLine.startHeight = numberOfLine * startdistanceBetweenLines;
         newLine.zPos = numberOfLine;
         readyForNewLine = false;
+
+        newLine.GetComponent<SortingGroup>().sortingOrder = -numberOfLine;
+
         numberOfLine++;
 
     }
