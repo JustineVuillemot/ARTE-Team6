@@ -49,7 +49,6 @@ public class Line : MonoBehaviour
             if (CheckForCollision())
             {
                 OnLineCollided();
-                break;
             }
 
             yield return null;
@@ -60,7 +59,7 @@ public class Line : MonoBehaviour
 
     void OnLineCollided()
     {
-        gameManager.OnLineFinished();
+        Debug.Log("lineCollided");
     }
 
     bool CheckForCollision()
@@ -73,24 +72,24 @@ public class Line : MonoBehaviour
         if (gameManager.lines.Count > 1)
         {
 
-            return heightOfCurrentLine <= HeightOfLineBelow() ;
+            return heightOfCurrentLine <= HeightOfOtherLineAtSameDistance(gameManager.lines[gameManager.lines.Count - 2].lineRenderer) ;
 
         }
         return false;
     }
 
-    float HeightOfLineBelow()
+    float HeightOfOtherLineAtSameDistance(LineRenderer otherLine)
     {
         Vector3 currentPoint = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
-        LineRenderer lineBelow = gameManager.lines[gameManager.lines.Count - 2].lineRenderer;
 
-        for(int i = 0; i < lineBelow.positionCount; i++) 
+        for(int i = 0; i < otherLine.positionCount; i++) 
         {
-            if(lineBelow.GetPosition(i).x > currentPoint.x)
+            if(otherLine.GetPosition(i).x >= currentPoint.x)
             {
-                return lineBelow.GetPosition(i).y;
+                return otherLine.GetPosition(i).y;
             } 
         }
+
         return 0;
     }
 }
