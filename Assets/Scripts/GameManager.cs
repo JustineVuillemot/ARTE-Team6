@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     public AnimationCurve focusCurve;
 
+    public float timeScale;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +49,7 @@ public class GameManager : MonoBehaviour
         if (distance < focusDistance)
         {
             float percentage = 1 - distance / focusDistance;
-            Time.timeScale = 1 - focusCurve.Evaluate(percentage) * 0.99f;
+            Time.timeScale = 1 - focusCurve.Evaluate(percentage) * timeScale;
             Camera.main.GetComponent<Zoom>().Focus(focusCurve.Evaluate(percentage), positionOfPoint);
         } else
         {

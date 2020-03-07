@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minZoom: 5
-  maxZoom: 1
+  maxZoom: 3
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -251,7 +251,7 @@ MonoBehaviour:
     type: 3}
   startdistanceBetweenLines: 1
   breakDuration: 0
-  focusDistance: 1
+  focusDistance: 3
   numberOfLine: 0
   lines: []
   focusCurve:
@@ -278,6 +278,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  timeScale: 0.99
 --- !u!4 &697542263
 Transform:
   m_ObjectHideFlags: 0
