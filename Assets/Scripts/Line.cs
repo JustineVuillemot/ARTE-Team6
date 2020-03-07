@@ -6,6 +6,7 @@ public class Line : MonoBehaviour
 {
     float percentage, height, addedHeight;
     public float speed, heightInfluence, xScale,yScale, startHeight;
+    public int zPos;
     public LineRenderer lineRenderer;
     GameManager gameManager;
     FillLine fill;
@@ -25,10 +26,10 @@ public class Line : MonoBehaviour
         //two points at the bottom
         lineRenderer.positionCount = 2;
 
-        Vector3 bottomRightPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f);
+        Vector3 bottomRightPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f, zPos);
         lineRenderer.SetPosition(0, bottomRightPos);
 
-        Vector3 bottomLeftPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f);
+        Vector3 bottomLeftPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f, zPos);
         lineRenderer.SetPosition(1, bottomLeftPos);
 
         while (percentage < 1)
@@ -49,7 +50,7 @@ public class Line : MonoBehaviour
 
             percentage += Time.deltaTime * speed;
             lineRenderer.positionCount++;
-            Vector3 newPointPosition = new Vector3(-xScale / 2 + xScale * percentage, -yScale / 2 + height + startHeight);
+            Vector3 newPointPosition = new Vector3(-xScale / 2 + xScale * percentage, -yScale / 2 + height + startHeight, zPos);
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, newPointPosition);
 
             //also updating bottom right corner position
@@ -83,8 +84,6 @@ public class Line : MonoBehaviour
         //If line below exists
         if (gameManager.lines.Count > 1)
         {
-            Debug.Log(DistanceToClosestPoint(gameManager.lines[gameManager.lines.Count - 2].lineRenderer));
-
             return heightOfCurrentLine <= HeightOfOtherLineAtSameDistance(gameManager.lines[gameManager.lines.Count - 2].lineRenderer) ;
 
         }

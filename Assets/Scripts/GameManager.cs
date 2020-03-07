@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         Line newLine = Instantiate(linePrefab);
         lines.Add(newLine);
         newLine.startHeight = numberOfLine * startdistanceBetweenLines;
+        newLine.zPos = numberOfLine;
         readyForNewLine = false;
         numberOfLine++;
 
