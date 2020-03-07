@@ -5,6 +5,7 @@ using UnityEngine;
 public class Line : MonoBehaviour
 {
     float percentage, height, addedHeight;
+
     public float speed, heightInfluence, xScale,yScale, startHeight;
     public int zPos;
     public LineRenderer lineRenderer;
@@ -36,11 +37,11 @@ public class Line : MonoBehaviour
         {
             if (Input.GetKey("space"))
             {
-                addedHeight = Mathf.Lerp(addedHeight, heightInfluence, Time.deltaTime);
+                addedHeight = Mathf.Lerp(addedHeight, heightInfluence, 3* Time.deltaTime);
             }
             else
             {
-                addedHeight = Mathf.Lerp(addedHeight, -heightInfluence, Time.deltaTime);
+                addedHeight = Mathf.Lerp(addedHeight, -heightInfluence, 3* Time.deltaTime);
                 //heightPercentage -= Mathf.Lerp(heightPercentage, heightInfluence, Time.deltaTime); //+= heightInfluence * Time.deltaTime;
 
                 //heightPercentage -= heightInfluence * Time.deltaTime;

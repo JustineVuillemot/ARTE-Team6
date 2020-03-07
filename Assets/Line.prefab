@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.2
-  heightInfluence: 0.1
+  heightInfluence: 0.04
   xScale: 7
   yScale: 4
   startHeight: 0

@@ -21,7 +21,7 @@ public class Zoom : MonoBehaviour
     }
 
     public void Focus(float percentage, Vector3 point) {
-        Vector3 idlePosition = new Vector3(Camera.main.transform.position.x, gameManager.numberOfLine * gameManager.startdistanceBetweenLines, Camera.main.transform.position.z);
+        Vector3 idlePosition = new Vector3(0, gameManager.numberOfLine * gameManager.startdistanceBetweenLines, Camera.main.transform.position.z);
 
         GetComponent<Camera>().orthographicSize = Mathf.Lerp(minZoom, maxZoom, percentage);
         Vector3 targetPosition = Vector3.Lerp(idlePosition, new Vector3(point.x, point.y, Camera.main.transform.position.z), percentage);

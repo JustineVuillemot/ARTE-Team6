@@ -252,8 +252,6 @@ MonoBehaviour:
   startdistanceBetweenLines: 1
   breakDuration: 0
   focusDistance: 1
-  minSpeed: 0.5
-  maxSpeed: 3
   numberOfLine: 0
   lines: []
   focusCurve:
