@@ -7,14 +7,12 @@ public class GameManager : MonoBehaviour
 {
     bool readyForNewLine = true;
     public Line linePrefab;
-    public float startdistanceBetweenLines, breakDuration, focusDistance;
+    public float startdistanceBetweenLines, breakDuration, focusArea;
     public int numberOfLine;
 
     public List<Line> lines = new List<Line>();
 
     public AnimationCurve focusCurve;
-
-    public float timeScale;
 
     // Start is called before the first frame update
     void Start()
@@ -42,21 +40,31 @@ public class GameManager : MonoBehaviour
 
     void Focus()
     {
+        
         Line currentLine = lines[lines.Count - 1];
         float distance = currentLine.DistanceToClosestPoint(lines[lines.Count - 2].lineRenderer);
         Vector3 positionOfPoint = currentLine.lineRenderer.GetPosition(currentLine.lineRenderer.positionCount - 1);
 
-        if (distance < focusDistance)
+        if (distance < focusArea)
         {
-            float percentage = 1 - distance / focusDistance;
+
+            /*float percentage = 1 - distance / focusDistance;
             Time.timeScale = 1 - focusCurve.Evaluate(percentage) * timeScale;
             Camera.main.GetComponent<Zoom>().Focus(focusCurve.Evaluate(percentage), positionOfPoint);
-        } else
-        {
-            Time.timeScale = 1;
-            Camera.main.GetComponent<Zoom>().Focus(0, positionOfPoint);
+    */
+
+            Camera.main.GetComponent<Zoom>().Focus();
 
         }
+        else
+        {
+            //   Time.timeScale = 1;
+            // Camera.main.GetComponent<Zoom>().Focus(0, positionOfPoint);
+            Camera.main.GetComponent<Zoom>().Unfocus();
+
+        }
+
+
     }
 
     public void StartNewline()
