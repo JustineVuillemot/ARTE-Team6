@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     bool readyForNewLine = true;
     public Line linePrefab;
     public float startdistanceBetweenLines, breakDuration;
-    int numberOfLine;
+    public int numberOfLine;
 
     public List<Line> lines = new List<Line>();
 
@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(Camera.main.transform.position.x, numberOfLine * startdistanceBetweenLines, Camera.main.transform.position.z), Time.deltaTime * 2);
 
         if(Input.GetKeyDown("space"))
         {
