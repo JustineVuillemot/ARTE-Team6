@@ -8,12 +8,14 @@ public class Line : MonoBehaviour
     public float speed, heightInfluence, xScale,yScale;
     LineRenderer lineRenderer;
     GameManager gameManager;
+    FillLine fill;
 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         lineRenderer = GetComponent<LineRenderer>();
+        fill = GetComponent<FillLine>();
 
          StartCoroutine(Generate());
     }
@@ -41,6 +43,9 @@ public class Line : MonoBehaviour
             lineRenderer.positionCount++;
             Vector3 newPointPosition = new Vector3(-xScale / 2 + xScale * percentage, -yScale / 2 + yScale * heightPercentage);
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, newPointPosition);
+
+            fill.CreateFilledShape(lineRenderer);
+
             yield return new WaitForEndOfFrame();
         }
         gameManager.OnLineFinished();
