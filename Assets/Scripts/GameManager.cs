@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour
 
     public Player player;
 
+    [Header("Creatures")]
+    [SerializeField]
+    public Creature2DArray[] creatures; 
+
     [Header("Sound")]
     public AudioClip[] ambientSounds;
     AudioSource audioSource;
@@ -114,6 +118,7 @@ public class GameManager : MonoBehaviour
         audioSource.Play();
 
         newLine.GetComponent<SortingGroup>().sortingOrder = -numberOfLine;
+        newLine.GetComponent<SpawnOnLine>().prefabs = creatures[numberOfLine].array;
 
         numberOfLine++;
 
@@ -149,9 +154,16 @@ public class GameManager : MonoBehaviour
         float duration = 0.5f;
         Color backgroundColor = Camera.main.backgroundColor;
         List<Color> fromColors = new List<Color>();
+        List<Color> toColors = new List<Color>();
         foreach (Line line in lines)
         {
-            fromColors.Add(line.GetComponent<FillLine>().GetColor());
+            Color c = line.GetComponent<FillLine>().GetColor();
+            fromColors.Add(c);
+
+            float h, s, v;
+            Color.RGBToHSV(c, out h, out s, out v);
+            s = 0.0f;
+            toColors.Add(Color.HSVToRGB(h, s, v));
         }
 
         while (t < duration)
@@ -162,7 +174,7 @@ public class GameManager : MonoBehaviour
             
             for (int i = 0; i < lines.Count; i++)
             {
-                Color currentColor = Color.Lerp(fromColors[i], Color.white, p);
+                Color currentColor = Color.Lerp(fromColors[i], toColors[i], p);
                 lines[i].GetComponent<FillLine>().SetColor(currentColor);
                 lines[i].GetComponent<SpawnOnLine>().SetCreaturesColor(currentColor);
             }
@@ -186,4 +198,10 @@ public class GameManager : MonoBehaviour
         audioSource.Stop();
         audioSource.volume = 0;
     }
+}
+
+[System.Serializable]
+public class Creature2DArray
+{
+    public LivingCreature[] array;
 }

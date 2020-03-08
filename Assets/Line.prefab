@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.1
-  heightInfluence: 0.1
+  heightInfluence: 0.15
   xScale: 18
   yScale: 0
   startHeight: 0
@@ -231,4 +231,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05154ef0dbda4e4c9ef89e8a724a272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6148698972250722294, guid: 64be95890220d4d4cb02128be2ae00d7, type: 3}
+  prefabs:
+  - {fileID: 6148698972250722294, guid: 64be95890220d4d4cb02128be2ae00d7, type: 3}

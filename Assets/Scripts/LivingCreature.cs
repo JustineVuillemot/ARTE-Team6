@@ -20,6 +20,11 @@ public class LivingCreature : MonoBehaviour
     public float _minScale = 0.5f;
     public float _maxScale = 1.3f;
 
+    [Header("Sound")]
+    public AudioSource _source;
+    public AudioClip _panicSound;
+    public AudioClip _smashSound;
+
     private LineRenderer _line;
     private int _currentIndex;
 
@@ -67,14 +72,14 @@ public class LivingCreature : MonoBehaviour
             {
                 nextIndex = 2;
                 _walkingDirection = 1;
-                _sprite.transform.localScale = new Vector3(_walkingDirection, _walkingDirection, 1);
+                _sprite.transform.localScale = new Vector3(_walkingDirection, 1, 1);
             }
 
             if(nextIndex >= _line.positionCount)
             {
                 nextIndex = _line.positionCount - 1;
                 _walkingDirection = -1;
-                _sprite.transform.localScale = new Vector3(_walkingDirection, _walkingDirection, 1);
+                _sprite.transform.localScale = new Vector3(_walkingDirection, 1, 1);
             }
 
             _currentIndex = nextIndex;
@@ -135,6 +140,8 @@ public class LivingCreature : MonoBehaviour
     {
         _state = CreatureState.Panic;
         _animator.SetBool("Panic", true);
+        _source.clip = _panicSound;
+        _source.Play();
     }
 
     //what to do when a creature stops panicking
@@ -156,6 +163,8 @@ public class LivingCreature : MonoBehaviour
     {
         _state = CreatureState.Smashed;
         _animator.SetBool("Smash", true);
+        _source.clip = _smashSound;
+        _source.Play();
     }
 
     public void EnableColliders(bool enabled)

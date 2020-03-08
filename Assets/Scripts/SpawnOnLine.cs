@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnOnLine : MonoBehaviour
 {
-    public LivingCreature prefab;
+    public LivingCreature[] prefabs;
 
     private LineRenderer _line;
     private FillLine _fill;
@@ -49,7 +49,9 @@ public class SpawnOnLine : MonoBehaviour
         }
 
         _currentSpawningPos = Random.Range(_currentSpawningPos, _line.positionCount);
-        LivingCreature creature = Instantiate(prefab, transform);
+        int randPrefab = Random.Range(0, prefabs.Length);
+
+        LivingCreature creature = Instantiate(prefabs[randPrefab], transform);
         creature.InitCreature(_fill.GetColor(), _line, _currentSpawningPos);
 
         _creaturesOnLine.Add(creature);

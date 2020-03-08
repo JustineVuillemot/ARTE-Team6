@@ -174,7 +174,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -312,7 +312,7 @@ MonoBehaviour:
   breakDuration: 0
   focusArea: 0.5
   numberOfLine: 0
-  distanceBetweenLines: 1
+  distanceBetweenLines: 1.25
   lines: []
   focusCurve:
     serializedVersion: 2
@@ -339,6 +339,23 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   player: {fileID: 995310638}
+  creatures:
+  - array:
+    - {fileID: 6148698972250722294, guid: 64be95890220d4d4cb02128be2ae00d7, type: 3}
+  - array:
+    - {fileID: 6148698972250722294, guid: 64be95890220d4d4cb02128be2ae00d7, type: 3}
+    - {fileID: 4503618248994814837, guid: 05609eb7ae28c224db52c8e3aa3d4cb7, type: 3}
+  - array:
+    - {fileID: 7051959759181894779, guid: 01b6c77215e807c418ad288b2919c6f3, type: 3}
+  - array:
+    - {fileID: 7051959759181894779, guid: 01b6c77215e807c418ad288b2919c6f3, type: 3}
+    - {fileID: 807178353240853567, guid: 1cf40b09839337e4283bccf67048df9a, type: 3}
+  - array:
+    - {fileID: 807178353240853567, guid: 1cf40b09839337e4283bccf67048df9a, type: 3}
+  - array:
+    - {fileID: 1764187839891118151, guid: c450616e770ca7a418e728330eaf4396, type: 3}
+  - array:
+    - {fileID: 5794670526404061266, guid: 8c5013427028c5041856a37c970cccde, type: 3}
   ambientSounds:
   - {fileID: 8300000, guid: 7a2de941395a07547bac360a8d87ef68, type: 3}
   - {fileID: 8300000, guid: 6a4215a934a42f44f839ba6cfbbd2ce1, type: 3}
