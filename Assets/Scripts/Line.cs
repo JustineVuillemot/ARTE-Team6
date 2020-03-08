@@ -84,10 +84,11 @@ public class Line : MonoBehaviour
         float heightOfCurrentLine = lineRenderer.GetPosition(lineRenderer.positionCount - 1).y;
 
         //check for collision 
-
         //If line below exists
         if (gameManager.lines.Count > 1)
         {
+
+
             return heightOfCurrentLine <= HeightOfOtherLineAtSameDistance(gameManager.lines[gameManager.lines.Count - 2].lineRenderer) 
                 || heightOfCurrentLine <= Camera.main.transform.position.y - Camera.main.orthographicSize
                 || heightOfCurrentLine >= Camera.main.transform.position.y + Camera.main.orthographicSize;
@@ -130,12 +131,11 @@ public class Line : MonoBehaviour
         {
             if(otherLine.GetPosition(i).x >= currentPoint.x)
             {
-                Debug.Log(otherLine.GetPosition(i).y);
                 return otherLine.GetPosition(i).y;
             } 
-        }
+        } 
 
-        return 0;
+        return -1000;
     }
 
 

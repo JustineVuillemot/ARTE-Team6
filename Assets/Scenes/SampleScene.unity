@@ -309,10 +309,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linePrefab: {fileID: 2505595815192311316, guid: d6a7423b4359a2047908cea5139672ca,
     type: 3}
-  startdistanceBetweenLines: 1
   breakDuration: 0
   focusArea: 0.5
   numberOfLine: 0
+  distanceBetweenLines: 1
   lines: []
   focusCurve:
     serializedVersion: 2
