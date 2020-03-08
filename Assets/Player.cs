@@ -15,4 +15,9 @@ public class Player : MonoBehaviour
     {
         
     }
+
+    public void UpdatePosition(Vector3 position)
+    {
+        transform.position = position;
+    }
 }

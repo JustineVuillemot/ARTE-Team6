@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     bool gameOver;
 
+    public Player player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,14 +28,14 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-        if(Input.GetKeyDown("space"))
+        if (Input.GetKeyDown("space"))
         {
-            if(gameOver)
+            if (gameOver)
             {
                 Application.LoadLevel(0);
             }
 
-            if(readyForNewLine)
+            if (readyForNewLine)
             {
                 StartNewline();
             }
@@ -42,6 +44,13 @@ public class GameManager : MonoBehaviour
         if (lines.Count > 1)
         {
             //Focus();
+        }
+
+        if (lines.Count > 0)
+        {
+            Line currentLine = lines[lines.Count - 1];
+            Vector3 positionOfPoint = currentLine.GetComponent<LineRenderer>().GetPosition(currentLine.GetComponent<LineRenderer>().positionCount - 1);
+            player.UpdatePosition(positionOfPoint);
         }
     }
 
@@ -81,6 +90,7 @@ public class GameManager : MonoBehaviour
         newLine.startHeight = numberOfLine * startdistanceBetweenLines;
         newLine.zPos = numberOfLine;
         readyForNewLine = false;
+        player.gameObject.SetActive(true);
 
         newLine.GetComponent<SortingGroup>().sortingOrder = -numberOfLine;
 
@@ -91,6 +101,7 @@ public class GameManager : MonoBehaviour
     public void OnLineFinished()
     {
         StartCoroutine(Break());
+        player.gameObject.SetActive(false);
     }
 
     IEnumerator Break()
@@ -105,6 +116,7 @@ public class GameManager : MonoBehaviour
         Camera.main.GetComponent<Shake>().StartShake();
         StartCoroutine(ChangeColorOfLines());
         gameOver = true;
+        player.gameObject.SetActive(false);
 
     }
 

@@ -89,12 +89,14 @@ public class Line : MonoBehaviour
         if (gameManager.lines.Count > 1)
         {
             return heightOfCurrentLine <= HeightOfOtherLineAtSameDistance(gameManager.lines[gameManager.lines.Count - 2].lineRenderer) 
-                || heightOfCurrentLine <= Camera.main.transform.position.y - Camera.main.orthographicSize;
+                || heightOfCurrentLine <= Camera.main.transform.position.y - Camera.main.orthographicSize
+                || heightOfCurrentLine >= Camera.main.transform.position.y + Camera.main.orthographicSize;
 
         } else
         {
-            return heightOfCurrentLine <= Camera.main.transform.position.y - Camera.main.orthographicSize;
-            
+            return heightOfCurrentLine <= Camera.main.transform.position.y - Camera.main.orthographicSize
+                || heightOfCurrentLine >= Camera.main.transform.position.y + Camera.main.orthographicSize;
+
         }
     }
 
