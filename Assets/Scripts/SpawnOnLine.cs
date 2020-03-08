@@ -13,6 +13,8 @@ public class SpawnOnLine : MonoBehaviour
     private bool _isLineFinished = false;
     private int _minDistToBorder = 10;
 
+    private List<LivingCreature> _creaturesOnLine = new List<LivingCreature>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +52,8 @@ public class SpawnOnLine : MonoBehaviour
         LivingCreature creature = Instantiate(prefab, transform);
         creature.InitCreature(_fill.GetColor(), _line, _currentSpawningPos);
 
+        _creaturesOnLine.Add(creature);
+
         randTime = Random.Range(0.0f, 1.0f);
         Invoke("Spawn", randTime);
     }
@@ -57,5 +61,18 @@ public class SpawnOnLine : MonoBehaviour
     public void OnLineFinished()
     {
         _isLineFinished = true;
+
+        foreach(LivingCreature creature in _creaturesOnLine)
+        {
+            creature.EnableColliders(true);
+        }
+    }
+
+    public void SetCreaturesColor(Color c)
+    {
+        foreach (LivingCreature creature in _creaturesOnLine)
+        {
+            creature.SetColor(c);
+        }
     }
 }

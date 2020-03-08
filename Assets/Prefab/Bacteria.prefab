@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9154655348590361723}
   - component: {fileID: 6974098079737606422}
+  - component: {fileID: 6860886295697629465}
   - component: {fileID: 8207319715761027016}
   m_Layer: 0
   m_Name: Panic Collider
@@ -42,12 +43,33 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.3}
   serializedVersion: 2
-  m_Radius: 0.8
+  m_Radius: 1
+--- !u!50 &6860886295697629465
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743921872544960092}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &8207319715761027016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55,7 +77,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 743921872544960092}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8385e1de8228bd642b5d708561d7e747, type: 3}
   m_Name: 
@@ -71,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 519328426886670171}
   - component: {fileID: 5422973203612026917}
+  - component: {fileID: 1353513656977975250}
   - component: {fileID: 6087877408629635157}
   m_Layer: 0
   m_Name: Smash Collider
@@ -103,12 +126,33 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.3}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.3
+--- !u!50 &1353513656977975250
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853289677483644775}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &6087877408629635157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +160,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853289677483644775}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c5f58e22e0770f4e8c8a11a6962909c, type: 3}
   m_Name: 
@@ -270,6 +314,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sprite: {fileID: 2075153147597417383}
   _animator: {fileID: 4650719354376596823}
+  _panicCollider: {fileID: 8207319715761027016}
+  _smashCollider: {fileID: 6087877408629635157}
   _speed: 1
   _minScale: 0.5
   _maxScale: 1
