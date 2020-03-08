@@ -18,11 +18,19 @@ public class PanicTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        _creature.FromOkToPanic();
+        if (enabled && collision.CompareTag("Player"))
+        {
+            //Debug.Log("Entered panic trigger");
+            _creature.FromOkToPanic();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        _creature.FromPanicToOk();
+        if (enabled && collision.CompareTag("Player"))
+        {
+            //Debug.Log("Exited panic trigger");
+            _creature.FromPanicToOk();
+        }
     }
 }

@@ -18,6 +18,9 @@ public class SmashTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        _creature.FromPanicToSmashed();
+        if (enabled && collision.CompareTag("Player"))
+        {
+            _creature.FromPanicToSmashed();
+        }
     }
 }

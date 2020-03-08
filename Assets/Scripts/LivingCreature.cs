@@ -14,6 +14,8 @@ public class LivingCreature : MonoBehaviour
 {
     public SpriteRenderer _sprite;
     public Animator _animator;
+    public PanicTrigger _panicCollider;
+    public SmashTrigger _smashCollider;
     public int _speed = 1;
     public float _minScale = 0.5f;
     public float _maxScale = 1.3f;
@@ -65,12 +67,14 @@ public class LivingCreature : MonoBehaviour
             {
                 nextIndex = 2;
                 _walkingDirection = 1;
+                _sprite.transform.localScale = new Vector3(_walkingDirection, _walkingDirection, 1);
             }
 
             if(nextIndex >= _line.positionCount)
             {
                 nextIndex = _line.positionCount - 1;
                 _walkingDirection = -1;
+                _sprite.transform.localScale = new Vector3(_walkingDirection, _walkingDirection, 1);
             }
 
             _currentIndex = nextIndex;
@@ -129,18 +133,39 @@ public class LivingCreature : MonoBehaviour
     //what to do when a creature panic
     public void FromOkToPanic()
     {
-
+        _state = CreatureState.Panic;
+        _animator.SetBool("Panic", true);
     }
 
     //what to do when a creature stops panicking
     public void FromPanicToOk()
     {
+        //it's over so we don't want to exit panic
+        if (_state == CreatureState.Smashed)
+        {
+            return;
+        }
 
+        _state = CreatureState.Idle;
+        _animator.SetBool("Panic", false);
+        _animTimer = Random.Range(1.0f, 4.0f);
     }
 
     //what to do when a creature is smahed
     public void FromPanicToSmashed()
     {
+        _state = CreatureState.Smashed;
+        _animator.SetBool("Smash", true);
+    }
 
+    public void EnableColliders(bool enabled)
+    {
+        _panicCollider.enabled = enabled;
+        _smashCollider.enabled = enabled;
+    }
+
+    public void SetColor(Color c)
+    {
+        _sprite.color = c;
     }
 }

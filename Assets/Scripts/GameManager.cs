@@ -170,7 +170,9 @@ public class GameManager : MonoBehaviour
             
             for (int i = 0; i < lines.Count; i++)
             {
-                lines[i].GetComponent<FillLine>().SetColor(Color.Lerp(fromColors[i], Color.white, p));
+                Color currentColor = Color.Lerp(fromColors[i], Color.white, p);
+                lines[i].GetComponent<FillLine>().SetColor(currentColor);
+                lines[i].GetComponent<SpawnOnLine>().SetCreaturesColor(currentColor);
             }
             Camera.main.backgroundColor = Color.Lerp(backgroundColor, Color.black, p);
 
