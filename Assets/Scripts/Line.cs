@@ -10,6 +10,7 @@ public class Line : MonoBehaviour
     public LineRenderer lineRenderer;
     GameManager gameManager;
     FillLine fill;
+    SpawnOnLine spawnScript;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,7 @@ public class Line : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         lineRenderer = GetComponent<LineRenderer>();
         fill = GetComponent<FillLine>();
+        spawnScript = GetComponent<SpawnOnLine>();
 
          StartCoroutine(Generate());
     }
@@ -68,6 +70,7 @@ public class Line : MonoBehaviour
         }
 
         gameManager.OnLineFinished();
+        spawnScript.OnLineFinished();
     }
 
     void OnLineCollided()
