@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public Line linePrefab;
     public float breakDuration, focusArea;
     public int numberOfLine;
-    public float distanceBetweenLines;
+    public float distanceBetweenLines, startPositionOfTitle;
 
 
     public List<Line> lines = new List<Line>();
@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour
     public float fadingDuration;
     Coroutine fadeOutCoroutine;
     public AnimationCurve fadingCurve;
+
+    public SpriteRenderer titlePrefab;
+    public Sprite[] titles;
 
     // Start is called before the first frame update
     void Start()
@@ -121,25 +124,23 @@ public class GameManager : MonoBehaviour
 
     public void OnLineFinished()
     {
-        StartCoroutine(Break());
+       
         player.gameObject.SetActive(false);
         fadeOutCoroutine = StartCoroutine(FadoutSound());
+
+        StartCoroutine(ShowNumber());
     }
 
-    IEnumerator Break()
-    {
-        yield return new WaitForSeconds(breakDuration);
-        readyForNewLine = true;
-
-    }
-
+   
     public void GameOver()
     {
         Camera.main.GetComponent<Shake>().StartShake();
         StartCoroutine(ChangeColorOfLines());
         gameOver = true;
         player.gameObject.SetActive(false);
+        StartCoroutine(FadoutSound());
 
+        StartCoroutine(ShowNumber());
     }
 
     IEnumerator ChangeColorOfLines()
@@ -183,5 +184,30 @@ public class GameManager : MonoBehaviour
         }
         audioSource.Stop();
         audioSource.volume = 0;
+    }
+    
+
+    IEnumerator ShowNumber()
+    {
+        SpriteRenderer newTitle = Instantiate(titlePrefab, new Vector3(0,0,0), new Quaternion());
+        newTitle.sprite = titles[7 - numberOfLine];
+        while (newTitle.color.a < 1)
+        {
+            newTitle.color += new Color(0, 0, 0, 2 * Time.deltaTime);
+            //newTitle.transform.position = Vector3.Lerp(newTitle.transform.position, new Vector3(), newTitle.color.a);
+            yield return null;
+        }
+        yield return new WaitForSeconds(0.5f);
+        while (newTitle.color.a > 0)
+        {
+            newTitle.color -= new Color(0, 0, 0, 2* Time.deltaTime);
+            //newTitle.transform.position = Vector3.Lerp(newTitle.transform.position, new Vector3(-startPositionOfTitle,0), 1 - newTitle.color.a);
+
+            yield return null;
+        }
+
+        readyForNewLine = true;
+
+
     }
 }
