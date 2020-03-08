@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Zoom : MonoBehaviour
 {
-    public float zoomScale, slowmotionFactor, zoomSpeed;
+    public float zoomScale, slowmotionFactor, zoomSpeed, slowDownSpeed;
     float standardZoom;
     GameManager gameManager;
     bool zoomIn;
@@ -22,14 +22,16 @@ public class Zoom : MonoBehaviour
         //Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(0, gameManager.numberOfLine * gameManager.startdistanceBetweenLines, Camera.main.transform.position.z), Time.deltaTime * 2);
         if(zoomIn)
         {
-            Time.timeScale = Mathf.Lerp(Time.timeScale, slowmotionFactor, Time.deltaTime * zoomSpeed);
+            //Time.timeScale = Mathf.Lerp(Time.timeScale, slowmotionFactor, Time.deltaTime * zoomSpeed);
+
+            Time.timeScale = slowmotionFactor;
             GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, zoomScale, Time.deltaTime * zoomSpeed);
             LineRenderer currentLine = gameManager.lines[gameManager.numberOfLine-1].lineRenderer;
             Vector3 positionOfPlayer = currentLine.GetPosition(currentLine.positionCount-1);
             transform.position = Vector3.Lerp(transform.position, new Vector3(positionOfPlayer.x, positionOfPlayer.y, transform.position.z), Time.deltaTime * zoomSpeed);
         } else
         {
-            Time.timeScale = Mathf.Lerp(Time.timeScale, 1, Time.deltaTime * zoomSpeed);
+            Time.timeScale = Mathf.Lerp(Time.timeScale, 1, Time.deltaTime * slowDownSpeed);
              GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, standardZoom, Time.deltaTime * zoomSpeed);
 
             transform.position = Vector3.Lerp(transform.position, new Vector3(0,0,Camera.main.transform.position.z), Time.deltaTime * zoomSpeed);

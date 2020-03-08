@@ -5,7 +5,6 @@ using UnityEngine;
 public class Line : MonoBehaviour
 {
     float percentage, height, addedHeight;
-
     public float speed, heightInfluence, xScale,yScale, startHeight;
     public int zPos;
     public LineRenderer lineRenderer;
@@ -27,10 +26,10 @@ public class Line : MonoBehaviour
         //two points at the bottom
         lineRenderer.positionCount = 2;
 
-        Vector3 bottomRightPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f, zPos);
+        Vector3 bottomRightPos = new Vector3(-xScale / 2 + xScale * 0, -7.0f, zPos);
         lineRenderer.SetPosition(0, bottomRightPos);
 
-        Vector3 bottomLeftPos = new Vector3(-xScale / 2 + xScale * 0, -5.0f, zPos);
+        Vector3 bottomLeftPos = new Vector3(-xScale / 2 + xScale * 0, -7.0f, zPos);
         lineRenderer.SetPosition(1, bottomLeftPos);
 
         while (percentage < 1)
@@ -63,6 +62,7 @@ public class Line : MonoBehaviour
             if (CheckForCollision())
             {
                 OnLineCollided();
+                yield break;
             }
 
             yield return null;
@@ -73,7 +73,7 @@ public class Line : MonoBehaviour
 
     void OnLineCollided()
     {
-        Debug.Log("lineCollided");
+        gameManager.GameOver();
     }
 
     bool CheckForCollision()
@@ -85,10 +85,14 @@ public class Line : MonoBehaviour
         //If line below exists
         if (gameManager.lines.Count > 1)
         {
-            return heightOfCurrentLine <= HeightOfOtherLineAtSameDistance(gameManager.lines[gameManager.lines.Count - 2].lineRenderer) ;
+            return heightOfCurrentLine <= HeightOfOtherLineAtSameDistance(gameManager.lines[gameManager.lines.Count - 2].lineRenderer) 
+                || heightOfCurrentLine <= Camera.main.transform.position.y - Camera.main.orthographicSize;
 
+        } else
+        {
+            return heightOfCurrentLine <= Camera.main.transform.position.y - Camera.main.orthographicSize;
+            
         }
-        return false;
     }
 
     public float DistanceToClosestPoint(LineRenderer otherLine)
@@ -117,7 +121,7 @@ public class Line : MonoBehaviour
     {
         Vector3 currentPoint = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
 
-        for(int i = 0; i < otherLine.positionCount; i++) 
+        for(int i = 2; i < otherLine.positionCount; i++) 
         {
             if(otherLine.GetPosition(i).x >= currentPoint.x)
             {
