@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     public Sprite[] titles;
     public Sprite gameTitle;
 
+    public Color[] colors;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -114,6 +116,8 @@ public class GameManager : MonoBehaviour
         newLine.zPos = numberOfLine;
         readyForNewLine = false;
         player.gameObject.SetActive(true);
+
+        newLine.GetComponent<FillLine>().SetColor(colors[numberOfLine]);
 
         if(fadeOutCoroutine != null)
         StopCoroutine(fadeOutCoroutine);
