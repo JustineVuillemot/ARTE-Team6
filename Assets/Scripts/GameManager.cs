@@ -7,8 +7,10 @@ public class GameManager : MonoBehaviour
 {
     bool readyForNewLine = true;
     public Line linePrefab;
-    public float startdistanceBetweenLines, breakDuration, focusArea;
+    public float breakDuration, focusArea;
     public int numberOfLine;
+    public float distanceBetweenLines;
+
 
     public List<Line> lines = new List<Line>();
 
@@ -18,10 +20,17 @@ public class GameManager : MonoBehaviour
 
     public Player player;
 
+    [Header("Sound")]
+    public AudioClip[] ambientSounds;
+    AudioSource audioSource;
+    public float fadingDuration;
+    Coroutine fadeOutCoroutine;
+    public AnimationCurve fadingCurve;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -49,8 +58,12 @@ public class GameManager : MonoBehaviour
         if (lines.Count > 0)
         {
             Line currentLine = lines[lines.Count - 1];
-            Vector3 positionOfPoint = currentLine.GetComponent<LineRenderer>().GetPosition(currentLine.GetComponent<LineRenderer>().positionCount - 1);
-            player.UpdatePosition(positionOfPoint);
+
+            if (currentLine.GetComponent<LineRenderer>().positionCount > 0)
+            {
+                Vector3 positionOfPoint = currentLine.GetComponent<LineRenderer>().GetPosition(currentLine.GetComponent<LineRenderer>().positionCount - 1);
+                player.UpdatePosition(positionOfPoint);
+            }
         }
     }
 
@@ -87,10 +100,18 @@ public class GameManager : MonoBehaviour
     {
         Line newLine = Instantiate(linePrefab);
         lines.Add(newLine);
-        newLine.startHeight = numberOfLine * startdistanceBetweenLines;
+        
+        newLine.startHeight = //Camera.main.transform.position.y - Camera.main.orthographicSize + ((Camera.main.orthographicSize * 2) / (numberOfLine+1));
+        numberOfLine * distanceBetweenLines - Camera.main.orthographicSize + distanceBetweenLines;
         newLine.zPos = numberOfLine;
         readyForNewLine = false;
         player.gameObject.SetActive(true);
+
+        if(fadeOutCoroutine != null)
+        StopCoroutine(fadeOutCoroutine);
+        audioSource.volume = 1;
+        audioSource.clip = ambientSounds[numberOfLine];
+        audioSource.Play();
 
         newLine.GetComponent<SortingGroup>().sortingOrder = -numberOfLine;
 
@@ -102,6 +123,7 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(Break());
         player.gameObject.SetActive(false);
+        fadeOutCoroutine = StartCoroutine(FadoutSound());
     }
 
     IEnumerator Break()
@@ -148,5 +170,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+    IEnumerator FadoutSound()
+    {
+        float t = 0; 
+
+        while(t < fadingDuration)
+        {
+            t += Time.deltaTime;
+            float p = t / fadingDuration;
+            audioSource.volume = Mathf.Lerp(1,0, fadingCurve.Evaluate(p));
+            yield return null; 
+        }
+        audioSource.Stop();
+        audioSource.volume = 0;
+    }
 }
