@@ -21,8 +21,9 @@ public class GameManager : MonoBehaviour
     public Player player;
 
     [Header("Sound")]
-    public AudioClip[] ambientSounds;
-    AudioSource audioSource;
+    public AudioClip[] normalSounds, ambientSounds;
+    public AudioSource normalAudiosource;
+    public AudioSource ambientAudiosource;
     public float fadingDuration;
     Coroutine fadeOutCoroutine;
     public AnimationCurve fadingCurve;
@@ -33,7 +34,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -49,7 +49,10 @@ public class GameManager : MonoBehaviour
 
             if (readyForNewLine)
             {
-                StartNewline();
+                if (numberOfLine < 7)
+                {
+                    StartNewline();
+                }
             }
         }
 
@@ -112,9 +115,12 @@ public class GameManager : MonoBehaviour
 
         if(fadeOutCoroutine != null)
         StopCoroutine(fadeOutCoroutine);
-        audioSource.volume = 1;
-        audioSource.clip = ambientSounds[numberOfLine];
-        audioSource.Play();
+        normalAudiosource.volume = 1;
+        normalAudiosource.clip = normalSounds[numberOfLine];
+        normalAudiosource.Play();
+
+        ambientAudiosource.clip = ambientSounds[numberOfLine];
+        ambientAudiosource.Play();
 
         newLine.GetComponent<SortingGroup>().sortingOrder = -numberOfLine;
 
@@ -139,6 +145,7 @@ public class GameManager : MonoBehaviour
         gameOver = true;
         player.gameObject.SetActive(false);
         StartCoroutine(FadoutSound());
+        ambientAudiosource.Stop();
 
         StartCoroutine(ShowNumber());
     }
@@ -179,11 +186,11 @@ public class GameManager : MonoBehaviour
         {
             t += Time.deltaTime;
             float p = t / fadingDuration;
-            audioSource.volume = Mathf.Lerp(1,0, fadingCurve.Evaluate(p));
+            normalAudiosource.volume = Mathf.Lerp(1,0, fadingCurve.Evaluate(p));
             yield return null; 
         }
-        audioSource.Stop();
-        audioSource.volume = 0;
+        normalAudiosource.Stop();
+        normalAudiosource.volume = 0;
     }
     
 
