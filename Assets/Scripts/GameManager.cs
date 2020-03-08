@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public float breakDuration, focusArea;
     public int numberOfLine;
     public float distanceBetweenLines, startPositionOfTitle;
-
+    public float normalSoundVolume;
 
     public List<Line> lines = new List<Line>();
 
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
 
         if(fadeOutCoroutine != null)
         StopCoroutine(fadeOutCoroutine);
-        normalAudiosource.volume = 1;
+        normalAudiosource.volume = normalSoundVolume;
         normalAudiosource.clip = normalSounds[numberOfLine];
         normalAudiosource.Play();
 
@@ -194,7 +194,7 @@ public class GameManager : MonoBehaviour
         {
             t += Time.deltaTime;
             float p = t / fadingDuration;
-            normalAudiosource.volume = Mathf.Lerp(1,0, fadingCurve.Evaluate(p));
+            normalAudiosource.volume = Mathf.Lerp(normalSoundVolume,0, fadingCurve.Evaluate(p));
             yield return null; 
         }
         normalAudiosource.Stop();

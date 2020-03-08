@@ -315,6 +315,7 @@ MonoBehaviour:
   numberOfLine: 0
   distanceBetweenLines: 1
   startPositionOfTitle: -20
+  normalSoundVolume: 0.3
   lines: []
   focusCurve:
     serializedVersion: 2
@@ -352,11 +353,11 @@ MonoBehaviour:
   ambientSounds:
   - {fileID: 8300000, guid: fcf14716743f1a445a79f7def6da8308, type: 3}
   - {fileID: 8300000, guid: 39f5a442028d2e34aa3f5d2e3a5ed895, type: 3}
-  - {fileID: 8300000, guid: 39f5a442028d2e34aa3f5d2e3a5ed895, type: 3}
-  - {fileID: 8300000, guid: 39f5a442028d2e34aa3f5d2e3a5ed895, type: 3}
-  - {fileID: 8300000, guid: 39f5a442028d2e34aa3f5d2e3a5ed895, type: 3}
-  - {fileID: 8300000, guid: 39f5a442028d2e34aa3f5d2e3a5ed895, type: 3}
-  - {fileID: 8300000, guid: 39f5a442028d2e34aa3f5d2e3a5ed895, type: 3}
+  - {fileID: 8300000, guid: bbbbe7a18d7c66d488cb6c20f43b50b5, type: 3}
+  - {fileID: 8300000, guid: 274baae0c0993b34b8bc865fa898be08, type: 3}
+  - {fileID: 8300000, guid: 073af59f6fc3db84b8ff0f475c73d10c, type: 3}
+  - {fileID: 8300000, guid: 98aeda6f17e6f9c42a4ca149d090d0e9, type: 3}
+  - {fileID: 8300000, guid: dc68819793640664ea06e228964cfe60, type: 3}
   normalAudiosource: {fileID: 697542264}
   ambientAudiosource: {fileID: 697542265}
   fadingDuration: 1
