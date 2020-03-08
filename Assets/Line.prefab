@@ -192,7 +192,7 @@ MonoBehaviour:
   speed: 0.1
   heightInfluence: 0.1
   xScale: 18
-  yScale: 4
+  yScale: 0
   startHeight: 0
   zPos: 0
   lineRenderer: {fileID: 0}

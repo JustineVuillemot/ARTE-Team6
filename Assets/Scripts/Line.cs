@@ -52,7 +52,7 @@ public class Line : MonoBehaviour
 
             percentage += Time.deltaTime * speed;
             lineRenderer.positionCount++;
-            Vector3 newPointPosition = new Vector3(-xScale / 2 + xScale * percentage, -yScale / 2 + height + startHeight, zPos);
+            Vector3 newPointPosition = new Vector3(-xScale / 2 + xScale * percentage, height + startHeight, zPos);
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, newPointPosition);
 
             //also updating bottom right corner position
@@ -84,10 +84,11 @@ public class Line : MonoBehaviour
         float heightOfCurrentLine = lineRenderer.GetPosition(lineRenderer.positionCount - 1).y;
 
         //check for collision 
-
         //If line below exists
         if (gameManager.lines.Count > 1)
         {
+
+
             return heightOfCurrentLine <= HeightOfOtherLineAtSameDistance(gameManager.lines[gameManager.lines.Count - 2].lineRenderer) 
                 || heightOfCurrentLine <= Camera.main.transform.position.y - Camera.main.orthographicSize
                 || heightOfCurrentLine >= Camera.main.transform.position.y + Camera.main.orthographicSize;
@@ -132,9 +133,9 @@ public class Line : MonoBehaviour
             {
                 return otherLine.GetPosition(i).y;
             } 
-        }
+        } 
 
-        return 0;
+        return -1000;
     }
 
 
