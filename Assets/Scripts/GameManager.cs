@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
-    bool readyForNewLine = true;
+    bool readyForNewLine;
     public Line linePrefab;
     public float breakDuration, focusArea;
     public int numberOfLine;
@@ -30,10 +30,12 @@ public class GameManager : MonoBehaviour
 
     public SpriteRenderer titlePrefab;
     public Sprite[] titles;
+    public Sprite gameTitle;
 
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(ShowTitle(gameTitle));
     }
 
     // Update is called once per frame
@@ -134,7 +136,7 @@ public class GameManager : MonoBehaviour
         player.gameObject.SetActive(false);
         fadeOutCoroutine = StartCoroutine(FadoutSound());
 
-        StartCoroutine(ShowNumber());
+        StartCoroutine(ShowTitle(titles[7 - numberOfLine]));
     }
 
    
@@ -147,7 +149,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(FadoutSound());
         ambientAudiosource.Stop();
 
-        StartCoroutine(ShowNumber());
+        StartCoroutine(ShowTitle(titles[7 - numberOfLine]));
     }
 
     IEnumerator ChangeColorOfLines()
@@ -196,17 +198,17 @@ public class GameManager : MonoBehaviour
     }
     
 
-    IEnumerator ShowNumber()
+    IEnumerator ShowTitle(Sprite title)
     {
         SpriteRenderer newTitle = Instantiate(titlePrefab, new Vector3(0,0,0), new Quaternion());
-        newTitle.sprite = titles[7 - numberOfLine];
+        newTitle.sprite = title;
         while (newTitle.color.a < 1)
         {
             newTitle.color += new Color(0, 0, 0, 2 * Time.deltaTime);
             //newTitle.transform.position = Vector3.Lerp(newTitle.transform.position, new Vector3(), newTitle.color.a);
             yield return null;
         }
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         while (newTitle.color.a > 0)
         {
             newTitle.color -= new Color(0, 0, 0, 2* Time.deltaTime);
