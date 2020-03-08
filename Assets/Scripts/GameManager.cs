@@ -5,12 +5,12 @@ using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
-    bool readyForNewLine = true;
+    bool readyForNewLine;
     public Line linePrefab;
     public float breakDuration, focusArea;
     public int numberOfLine;
-    public float distanceBetweenLines;
-
+    public float distanceBetweenLines, startPositionOfTitle;
+    public float normalSoundVolume;
 
     public List<Line> lines = new List<Line>();
 
@@ -25,16 +25,23 @@ public class GameManager : MonoBehaviour
     public Creature2DArray[] creatures; 
 
     [Header("Sound")]
-    public AudioClip[] ambientSounds;
-    AudioSource audioSource;
+    public AudioClip[] normalSounds, ambientSounds;
+    public AudioSource normalAudiosource;
+    public AudioSource ambientAudiosource;
     public float fadingDuration;
     Coroutine fadeOutCoroutine;
     public AnimationCurve fadingCurve;
 
+    public SpriteRenderer titlePrefab;
+    public Sprite[] titles;
+    public Sprite gameTitle;
+
+    public Color[] colors;
+
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        StartCoroutine(ShowTitle(gameTitle));
     }
 
     // Update is called once per frame
@@ -50,7 +57,10 @@ public class GameManager : MonoBehaviour
 
             if (readyForNewLine)
             {
-                StartNewline();
+                if (numberOfLine < 7)
+                {
+                    StartNewline();
+                }
             }
         }
 
@@ -111,11 +121,16 @@ public class GameManager : MonoBehaviour
         readyForNewLine = false;
         player.gameObject.SetActive(true);
 
+        newLine.GetComponent<FillLine>().SetColor(colors[numberOfLine]);
+
         if(fadeOutCoroutine != null)
         StopCoroutine(fadeOutCoroutine);
-        audioSource.volume = 1;
-        audioSource.clip = ambientSounds[numberOfLine];
-        audioSource.Play();
+        normalAudiosource.volume = normalSoundVolume;
+        normalAudiosource.clip = normalSounds[numberOfLine];
+        normalAudiosource.Play();
+
+        ambientAudiosource.clip = ambientSounds[numberOfLine];
+        ambientAudiosource.Play();
 
         newLine.GetComponent<SortingGroup>().sortingOrder = -numberOfLine;
         newLine.GetComponent<SpawnOnLine>().prefabs = creatures[numberOfLine].array;
@@ -126,25 +141,24 @@ public class GameManager : MonoBehaviour
 
     public void OnLineFinished()
     {
-        StartCoroutine(Break());
+       
         player.gameObject.SetActive(false);
         fadeOutCoroutine = StartCoroutine(FadoutSound());
+
+        StartCoroutine(ShowTitle(titles[7 - numberOfLine]));
     }
 
-    IEnumerator Break()
-    {
-        yield return new WaitForSeconds(breakDuration);
-        readyForNewLine = true;
-
-    }
-
+   
     public void GameOver()
     {
         Camera.main.GetComponent<Shake>().StartShake();
         StartCoroutine(ChangeColorOfLines());
         gameOver = true;
         player.gameObject.SetActive(false);
+        StartCoroutine(FadoutSound());
+        ambientAudiosource.Stop();
 
+        StartCoroutine(ShowTitle(titles[7 - numberOfLine]));
     }
 
     IEnumerator ChangeColorOfLines()
@@ -192,11 +206,36 @@ public class GameManager : MonoBehaviour
         {
             t += Time.deltaTime;
             float p = t / fadingDuration;
-            audioSource.volume = Mathf.Lerp(1,0, fadingCurve.Evaluate(p));
+            normalAudiosource.volume = Mathf.Lerp(normalSoundVolume,0, fadingCurve.Evaluate(p));
             yield return null; 
         }
-        audioSource.Stop();
-        audioSource.volume = 0;
+        normalAudiosource.Stop();
+        normalAudiosource.volume = 0;
+    }
+    
+
+    IEnumerator ShowTitle(Sprite title)
+    {
+        SpriteRenderer newTitle = Instantiate(titlePrefab, new Vector3(0,0,0), new Quaternion());
+        newTitle.sprite = title;
+        while (newTitle.color.a < 1)
+        {
+            newTitle.color += new Color(0, 0, 0, 2 * Time.deltaTime);
+            //newTitle.transform.position = Vector3.Lerp(newTitle.transform.position, new Vector3(), newTitle.color.a);
+            yield return null;
+        }
+        yield return new WaitForSeconds(1f);
+        while (newTitle.color.a > 0)
+        {
+            newTitle.color -= new Color(0, 0, 0, 2* Time.deltaTime);
+            //newTitle.transform.position = Vector3.Lerp(newTitle.transform.position, new Vector3(-startPositionOfTitle,0), 1 - newTitle.color.a);
+
+            yield return null;
+        }
+
+        readyForNewLine = true;
+
+
     }
 }
 
