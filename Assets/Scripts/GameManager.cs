@@ -7,17 +7,19 @@ public class GameManager : MonoBehaviour
 {
     bool readyForNewLine = true;
     public Line linePrefab;
-    public float startdistanceBetweenLines, breakDuration, focusDistance, minSpeed, maxSpeed;
+    public float startdistanceBetweenLines, breakDuration, focusArea;
     public int numberOfLine;
 
     public List<Line> lines = new List<Line>();
 
     public AnimationCurve focusCurve;
 
+    bool gameOver;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -26,6 +28,11 @@ public class GameManager : MonoBehaviour
 
         if(Input.GetKeyDown("space"))
         {
+            if(gameOver)
+            {
+                Application.LoadLevel(0);
+            }
+
             if(readyForNewLine)
             {
                 StartNewline();
@@ -34,22 +41,37 @@ public class GameManager : MonoBehaviour
 
         if (lines.Count > 1)
         {
-            Focus();
+            //Focus();
         }
     }
 
     void Focus()
     {
+        
         Line currentLine = lines[lines.Count - 1];
         float distance = currentLine.DistanceToClosestPoint(lines[lines.Count - 2].lineRenderer);
+        Vector3 positionOfPoint = currentLine.GetComponent<LineRenderer>().GetPosition(currentLine.GetComponent<LineRenderer>().positionCount - 1);
 
-        if (distance < focusDistance)
+        if (distance < focusArea)
         {
-            float percentage = 1 - distance / focusDistance;
-            Time.timeScale = 1 - focusCurve.Evaluate(percentage) * 0.9f;
-            Vector3 positionOfPoint = currentLine.lineRenderer.GetPosition(currentLine.lineRenderer.positionCount - 1);
+
+            /*float percentage = 1 - distance / focusDistance;
+            Time.timeScale = 1 - focusCurve.Evaluate(percentage) * timeScale;
             Camera.main.GetComponent<Zoom>().Focus(focusCurve.Evaluate(percentage), positionOfPoint);
+    */
+
+            Camera.main.GetComponent<Zoom>().Focus();
+
         }
+        else
+        {
+            //   Time.timeScale = 1;
+            // Camera.main.GetComponent<Zoom>().Focus(0, positionOfPoint);
+            Camera.main.GetComponent<Zoom>().Unfocus();
+
+        }
+
+
     }
 
     public void StartNewline()
@@ -77,4 +99,42 @@ public class GameManager : MonoBehaviour
         readyForNewLine = true;
 
     }
+
+    public void GameOver()
+    {
+        Camera.main.GetComponent<Shake>().StartShake();
+        StartCoroutine(ChangeColorOfLines());
+        gameOver = true;
+
+    }
+
+    IEnumerator ChangeColorOfLines()
+    {
+        float t = 0;
+        float p = 0;
+        float duration = 0.5f;
+        Color backgroundColor = Camera.main.backgroundColor;
+        List<Color> fromColors = new List<Color>();
+        foreach (Line line in lines)
+        {
+            fromColors.Add(line.GetComponent<FillLine>().GetColor());
+        }
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            p = t / duration;
+
+            
+            for (int i = 0; i < lines.Count; i++)
+            {
+                lines[i].GetComponent<FillLine>().SetColor(Color.Lerp(fromColors[i], Color.white, p));
+            }
+            Camera.main.backgroundColor = Color.Lerp(backgroundColor, Color.black, p);
+
+            yield return null;
+        }
+    }
+
+    
 }

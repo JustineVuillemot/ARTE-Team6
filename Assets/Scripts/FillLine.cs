@@ -73,6 +73,12 @@ public class FillLine : MonoBehaviour
         _filter.mesh = mesh;
     }
 
+    public void SetColor(Color color)
+    {
+        _renderer.material.color = color;
+        meshColor = color;
+    }
+
     public Color GetColor()
     {
         return meshColor;
