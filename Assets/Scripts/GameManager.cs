@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(ShowTitle(gameTitle));
+        StartCoroutine(ShowTitle(gameTitle, 1.0f));
     }
 
     // Update is called once per frame
@@ -50,9 +51,9 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown("space"))
         {
-            if (gameOver)
+            if (gameOver && readyForNewLine)
             {
-                Application.LoadLevel(0);
+                SceneManager.LoadScene(0);
             }
 
             if (readyForNewLine)
@@ -62,11 +63,6 @@ public class GameManager : MonoBehaviour
                     StartNewline();
                 }
             }
-        }
-
-        if (lines.Count > 1)
-        {
-            //Focus();
         }
 
         if (lines.Count > 0)
@@ -145,7 +141,7 @@ public class GameManager : MonoBehaviour
         player.gameObject.SetActive(false);
         fadeOutCoroutine = StartCoroutine(FadoutSound());
 
-        StartCoroutine(ShowTitle(titles[7 - numberOfLine]));
+        StartCoroutine(ShowTitle(titles[7 - numberOfLine], 0.5f));
     }
 
    
@@ -154,11 +150,12 @@ public class GameManager : MonoBehaviour
         Camera.main.GetComponent<Shake>().StartShake();
         StartCoroutine(ChangeColorOfLines());
         gameOver = true;
+        readyForNewLine = false;
         player.gameObject.SetActive(false);
         StartCoroutine(FadoutSound());
         ambientAudiosource.Stop();
 
-        StartCoroutine(ShowTitle(titles[7 - numberOfLine]));
+        StartCoroutine(ShowTitle(titles[7 - numberOfLine], 0.5f));
     }
 
     IEnumerator ChangeColorOfLines()
@@ -214,10 +211,12 @@ public class GameManager : MonoBehaviour
     }
     
 
-    IEnumerator ShowTitle(Sprite title)
+    IEnumerator ShowTitle(Sprite title, float scale)
     {
         SpriteRenderer newTitle = Instantiate(titlePrefab, new Vector3(0,0,0), new Quaternion());
         newTitle.sprite = title;
+        newTitle.transform.localScale = new Vector3(scale, scale, 1);
+
         while (newTitle.color.a < 1)
         {
             newTitle.color += new Color(0, 0, 0, 2 * Time.deltaTime);

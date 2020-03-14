@@ -77,6 +77,7 @@ public class Line : MonoBehaviour
     void OnLineCollided()
     {
         gameManager.GameOver();
+        spawnScript.OnLineFinished();
     }
 
     bool CheckForCollision()
