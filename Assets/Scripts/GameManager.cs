@@ -39,10 +39,15 @@ public class GameManager : MonoBehaviour
 
     public Color[] colors;
 
+    private float lineXScale = 18;
+
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(ShowTitle(gameTitle, 1.0f));
+
+        float camHalfWidth = Camera.main.orthographicSize * Screen.width / Screen.height;
+        lineXScale = (camHalfWidth + 0.1f) * 2;
     }
 
     // Update is called once per frame
@@ -63,6 +68,11 @@ public class GameManager : MonoBehaviour
                     StartNewline();
                 }
             }
+        }
+
+        if(readyForNewLine && numberOfLine == 7)
+        {
+            StartCoroutine(Victory());
         }
 
         if (lines.Count > 0)
@@ -111,10 +121,11 @@ public class GameManager : MonoBehaviour
         Line newLine = Instantiate(linePrefab);
         lines.Add(newLine);
         
-        newLine.startHeight = //Camera.main.transform.position.y - Camera.main.orthographicSize + ((Camera.main.orthographicSize * 2) / (numberOfLine+1));
-        numberOfLine * distanceBetweenLines - Camera.main.orthographicSize + distanceBetweenLines;
+        newLine.startHeight = numberOfLine * distanceBetweenLines - Camera.main.orthographicSize + distanceBetweenLines;
+        newLine.xScale = lineXScale;
         newLine.zPos = numberOfLine;
         readyForNewLine = false;
+
         player.gameObject.SetActive(true);
 
         newLine.GetComponent<FillLine>().SetColor(colors[numberOfLine]);
@@ -156,6 +167,17 @@ public class GameManager : MonoBehaviour
         ambientAudiosource.Stop();
 
         StartCoroutine(ShowTitle(titles[7 - numberOfLine], 0.5f));
+    }
+
+    public IEnumerator Victory()
+    {
+        Debug.Log("Victory !");
+        //victory animation
+
+        yield return new WaitForSeconds(3.0f);
+
+        //to be able to replay by hitting space
+        gameOver = true;
     }
 
     IEnumerator ChangeColorOfLines()
