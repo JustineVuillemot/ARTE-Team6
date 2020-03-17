@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
     public SpriteRenderer titlePrefab;
     public Sprite[] titles;
     public Sprite gameTitle;
+    public GameObject tutoAnim;
+    public GameObject victoryAnim;
+    public GameObject victoryButton;
 
     public Color[] colors;
 
@@ -44,7 +47,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(ShowTitle(gameTitle, 1.0f));
+        StartCoroutine(GameStart());
 
         float camHalfWidth = Camera.main.orthographicSize * Screen.width / Screen.height;
         lineXScale = (camHalfWidth + 0.1f) * 2;
@@ -70,9 +73,9 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if(readyForNewLine && numberOfLine == 7)
+        if(!gameOver && readyForNewLine && numberOfLine == 7)
         {
-            StartCoroutine(Victory());
+            Victory();
         }
 
         if (lines.Count > 0)
@@ -155,6 +158,21 @@ public class GameManager : MonoBehaviour
         StartCoroutine(ShowTitle(titles[7 - numberOfLine], 0.5f));
     }
 
+    private IEnumerator GameStart()
+    {
+        yield return ShowTitle(gameTitle, 1.0f);
+
+        readyForNewLine = false;
+
+        tutoAnim.SetActive(true);
+
+        yield return new WaitForSeconds(2.0f);
+
+        tutoAnim.SetActive(false);
+
+        readyForNewLine = true;
+    }
+
    
     public void GameOver()
     {
@@ -169,12 +187,12 @@ public class GameManager : MonoBehaviour
         StartCoroutine(ShowTitle(titles[7 - numberOfLine], 0.5f));
     }
 
-    public IEnumerator Victory()
+    public void Victory()
     {
-        Debug.Log("Victory !");
-        //victory animation
+        //Debug.Log("Victory !");
 
-        yield return new WaitForSeconds(3.0f);
+        victoryAnim.SetActive(true);
+        victoryButton.SetActive(true);
 
         //to be able to replay by hitting space
         gameOver = true;
@@ -245,7 +263,9 @@ public class GameManager : MonoBehaviour
             //newTitle.transform.position = Vector3.Lerp(newTitle.transform.position, new Vector3(), newTitle.color.a);
             yield return null;
         }
+
         yield return new WaitForSeconds(1f);
+
         while (newTitle.color.a > 0)
         {
             newTitle.color -= new Color(0, 0, 0, 2* Time.deltaTime);
@@ -255,8 +275,6 @@ public class GameManager : MonoBehaviour
         }
 
         readyForNewLine = true;
-
-
     }
 }
 

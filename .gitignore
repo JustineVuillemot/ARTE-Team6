@@ -51,6 +51,9 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
+# Project assets before import
+*.zip
+
 # Builds
 *.apk
 *.unitypackage
