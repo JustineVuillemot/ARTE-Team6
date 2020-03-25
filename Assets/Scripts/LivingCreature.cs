@@ -104,6 +104,7 @@ public class LivingCreature : MonoBehaviour
         _state = CreatureState.Idle;
 
         _walkingDirection = Random.Range(0, 2) == 0 ? -1 : 1;
+        _source.pitch = Random.Range(-1.5f, 1.5f);
 
         float scale = Random.Range(_minScale, _maxScale);
         transform.localScale = new Vector3(scale, scale);

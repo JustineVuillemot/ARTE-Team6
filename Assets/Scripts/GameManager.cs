@@ -64,11 +64,13 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene(0);
             }
 
-            if (readyForNewLine)
+            if (readyForNewLine && numberOfLine < 7)
             {
-                if (numberOfLine < 7)
+                StartNewline();
+
+                if (tutoAnim.activeSelf)
                 {
-                    StartNewline();
+                    tutoAnim.SetActive(false);
                 }
             }
         }
@@ -167,8 +169,6 @@ public class GameManager : MonoBehaviour
         tutoAnim.SetActive(true);
 
         yield return new WaitForSeconds(2.0f);
-
-        tutoAnim.SetActive(false);
 
         readyForNewLine = true;
     }
